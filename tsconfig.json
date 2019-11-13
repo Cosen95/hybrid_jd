@@ -16,7 +16,8 @@
       "@/*": ["src/*"],
       "@js/*": ["src/assets/js/*"],
       "@css/*": ["src/assets/css/*"],
-      "@imgs/*": ["src/assets/imgs/*"]
+      "@imgs/*": ["src/assets/imgs/*"],
+      "@c/*": ["src/components/*"]
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
