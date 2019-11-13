@@ -64,7 +64,7 @@ export default class extends Vue {
   justify-content: space-around;
   background-color: white;
   box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.2);
-  // border-top: 1px solid $lineColor;
+  border-top: 1px solid $lineColor;
 
   &-item {
     text-align: center;
@@ -80,11 +80,11 @@ export default class extends Vue {
     }
 
     &-name {
-      // font-size: $infoSize;
+      font-size: $infoSize;
       margin-top: px2rem(4);
 
       &-h {
-        // color: $mainColor;
+        color: $mainColor;
       }
     }
   }
