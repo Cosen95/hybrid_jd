@@ -4,6 +4,7 @@
       class="tool-bar-item"
       v-for="(item, index) in toolBarData"
       :key="index"
+      @click="onChangeFragment(item, index)"
     >
       <img
         class="tool-bar-item-img"
@@ -23,11 +24,18 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
+export interface toolBarType {
+  nIcon: string;
+  hIcon: string;
+  name: string;
+  componentName: string;
+}
+
 @Component({
   name: "ToolBar"
 })
 export default class extends Vue {
-  private toolBarData = [
+  private toolBarData: toolBarType[] = [
     {
       // 默认状态下的图片
       nIcon: require("@imgs/home-n.svg"),
@@ -53,6 +61,11 @@ export default class extends Vue {
   ];
   // 选中的 tab 按钮
   private selectItemIndex: number = 0;
+
+  private onChangeFragment(item: toolBarType, index: number) {
+    this.selectItemIndex = index;
+    this.$emit("onChangeFragment", item.componentName);
+  }
 }
 </script>
 <style lang="scss" scoped>
