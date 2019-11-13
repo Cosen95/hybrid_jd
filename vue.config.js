@@ -28,6 +28,16 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === "development",
   // merge webpack config
   chainWebpack: config => {
+    // https://github.com/shakacode/sass-resources-loader/blob/master/README.md#vuejs-webpack-templatevue-cli3
+    const oneOfsMap = config.module.rule("scss").oneOfs.store;
+    oneOfsMap.forEach(item => {
+      item
+        .use("sass-resources-loader")
+        .loader("sass-resources-loader")
+        .options({
+          resources: ["./src/assets/css/style.scss"]
+        });
+    });
     config.output.filename("[name].[hash].js").end();
   },
   configureWebpack: {
@@ -86,9 +96,9 @@ module.exports = {
   pluginOptions: {
     // style-resources-loader(https://www.npmjs.com/package/vue-cli-plugin-style-resources-loader)
     // 导入一些公共的样式文件，比如：variables / mixins / functions，避免在每个样式文件中手动的@import导入
-    "style-resources-loader": {
-      preProcessor: "scss",
-      patterns: [path.resolve(__dirname, "src/assets/css/style.scss")]
-    }
+    // "style-resources-loader": {
+    //   preProcessor: "scss",
+    //   patterns: [path.resolve(__dirname, "src/assets/css/dimens.scss")]
+    // }
   }
 };
