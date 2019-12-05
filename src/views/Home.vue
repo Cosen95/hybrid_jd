@@ -14,19 +14,22 @@
           />
         </div>
       </activity>
+      <mode-options></mode-options>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import MySwiper from "@c/MySwiper.vue";
+import MySwiper from "@c/currency/MySwiper.vue";
 import Activity from "@c/currency/Activity.vue";
+import ModeOptions from "@c/currency/ModeOptions.vue";
 @Component({
   name: "Home",
   components: {
     MySwiper,
-    Activity
+    Activity,
+    ModeOptions
   }
 })
 export default class extends Vue {
