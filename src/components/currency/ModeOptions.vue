@@ -13,12 +13,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { modeType } from "@/types/common.d.ts";
 
-interface modeType {
-  id: string;
-  icon: string;
-  title: string;
-}
+// interface modeType {
+//   id: string;
+//   icon: string;
+//   title: string;
+// }
 @Component({
   name: "ModeOptions",
   components: {}

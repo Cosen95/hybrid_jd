@@ -23,13 +23,7 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-
-export interface toolBarType {
-  nIcon: string;
-  hIcon: string;
-  name: string;
-  componentName: string;
-}
+import { toolBarType } from "@/types/common.d.ts";
 
 @Component({
   name: "ToolBar"

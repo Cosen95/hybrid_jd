@@ -14,7 +14,10 @@
           />
         </div>
       </activity>
+      <!-- 功能选项 -->
       <mode-options></mode-options>
+      <!-- 秒杀模块 -->
+      <seconds :dataSource="secondsDatas"></seconds>
     </div>
   </div>
 </template>
@@ -24,12 +27,16 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import MySwiper from "@c/currency/MySwiper.vue";
 import Activity from "@c/currency/Activity.vue";
 import ModeOptions from "@c/currency/ModeOptions.vue";
+import Seconds from "@c/seconds/Seconds.vue";
+import { secondsType } from "@/types/common.d.ts";
+
 @Component({
   name: "Home",
   components: {
     MySwiper,
     Activity,
-    ModeOptions
+    ModeOptions,
+    Seconds
   }
 })
 export default class extends Vue {
@@ -48,6 +55,13 @@ export default class extends Vue {
     require("@imgs/520-1.gif"),
     require("@imgs/520-2.gif"),
     require("@imgs/520-3.gif")
+  ];
+  private secondsDatas: secondsType[] = [
+    {
+      icon: require("@imgs/swiper-8.jpg"),
+      price: "47",
+      oldPrice: "90.6"
+    }
   ];
 }
 </script>
