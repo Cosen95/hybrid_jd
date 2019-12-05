@@ -4,7 +4,7 @@ const MAX_FONT_SIZE = 42;
 // 监听 html 文档被解析完成的事件
 document.addEventListener("DOMContentLoaded", () => {
   // 获取 html 标签
-  const html = document.querySelector("html");
+  let html: HTMLHtmlElement | null = document.querySelector("html");
   // 获取根元素 fontSize标准， 屏幕宽度 / 10
   let fontSize = window.innerWidth / 10;
   // 获取到的fontSize不允许超过我们定义的最大值
