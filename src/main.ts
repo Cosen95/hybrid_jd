@@ -6,10 +6,10 @@ import "@js/htmlFontSize.ts";
 // import "@js/flexible.ts";
 // 过滤器
 import * as filters from "@/utils/filters.ts";
-Object.keys(filters).forEach(name => {
-  Vue.filter(name, filters[name]);
+// Register global filter functions
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, (filters as { [key: string]: Function })[key]);
 });
-
 Vue.config.productionTip = false;
 new Vue({
   router,

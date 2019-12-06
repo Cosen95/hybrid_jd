@@ -18,6 +18,14 @@
       <mode-options></mode-options>
       <!-- 秒杀模块 -->
       <seconds :dataSource="secondsDatas"></seconds>
+      <!-- 拼购节 -->
+      <activity>
+        <div class="activity-pin-gou-jie">
+          <img src="@imgs/pinGouJie.gif" alt="" srcset="" />
+        </div>
+      </activity>
+      <!-- 商品列表 -->
+      <goods></goods>
     </div>
   </div>
 </template>
@@ -28,7 +36,9 @@ import MySwiper from "@c/currency/MySwiper.vue";
 import Activity from "@c/currency/Activity.vue";
 import ModeOptions from "@c/currency/ModeOptions.vue";
 import Seconds from "@c/seconds/Seconds.vue";
+import Goods from "@c/goods/Goods.vue";
 import { secondsType } from "@/types/common.d.ts";
+import { getGoods } from "../services/goods";
 
 @Component({
   name: "Home",
@@ -36,7 +46,8 @@ import { secondsType } from "@/types/common.d.ts";
     MySwiper,
     Activity,
     ModeOptions,
-    Seconds
+    Seconds,
+    Goods
   }
 })
 export default class extends Vue {
@@ -97,6 +108,14 @@ export default class extends Vue {
       img {
         display: inline-block;
         width: 33.33%;
+      }
+    }
+    .activity-pin-gou-jie {
+      background-color: white;
+      margin-top: $marginSize;
+
+      img {
+        width: 100%;
       }
     }
   }
