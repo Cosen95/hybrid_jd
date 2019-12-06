@@ -3,6 +3,7 @@
     <div class="seconds-wrap">
       <p class="seconds-wrap-title">京东秒杀</p>
       <!-- 倒计时模块组件 -->
+      <count-down :endHours="15"></count-down>
     </div>
     <div class="seconds-content">
       <div
@@ -30,10 +31,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { secondsType } from "@/types/common.d.ts";
+import CountDown from "@c/seconds/CountDown.vue";
 
 @Component({
   name: "Seconds",
-  components: {}
+  components: {
+    CountDown
+  }
 })
 export default class extends Vue {
   @Prop({ default: () => [], required: true })

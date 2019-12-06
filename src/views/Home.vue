@@ -58,9 +58,24 @@ export default class extends Vue {
   ];
   private secondsDatas: secondsType[] = [
     {
-      icon: require("@imgs/swiper-8.jpg"),
-      price: "47",
-      oldPrice: "90.6"
+      icon: require("@imgs/goods/goods-2.jpg"),
+      price: "4700",
+      oldPrice: "6899"
+    },
+    {
+      icon: require("@imgs/goods/goods-4.jpg"),
+      price: "9.1",
+      oldPrice: "29.9"
+    },
+    {
+      icon: require("@imgs/goods/goods-7.jpg"),
+      price: "2899",
+      oldPrice: "3688"
+    },
+    {
+      icon: require("@imgs/goods/goods-11.jpg"),
+      price: "1799",
+      oldPrice: "2299"
     }
   ];
 }
