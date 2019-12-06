@@ -3,11 +3,13 @@
 1、创建商品列表的基本html和css，让item相对于goods(div)进行排列(相对布局)
 2、生成不同高度的图片，撑起不同高度的item
 3、计算item的位置，来达到从上到下、从左到右依次排列的目的 -->
-  <div class="goods goods-waterfall">
+  <div class="goods goods-waterfall" ref="goods">
     <div
       class="goods-item goods-waterfall-item"
       v-for="(item, index) in dataSource"
       :key="index"
+      ref="goodsItem"
+      :style="goodsItemStyles[index]"
     >
       <!-- 图片 -->
       <img
@@ -43,16 +45,22 @@ import { getGoods } from "@/services/goods";
   components: {}
 })
 export default class extends Vue {
-  private dataSource = [];
-  private imgStyles = [];
-  private MAX_IMG_HEIGHT = 230;
-  private MIN_IMG_HEIGHT = 178;
+  private dataSource = []; // 数据源
+  private imgStyles = []; // 图片样式集合
+  private MAX_IMG_HEIGHT = 230; // 最大高度
+  private MIN_IMG_HEIGHT = 178; // 最小高度
+  private ITEM_MARGIN_SIZE = 8; // item margin
+  private goodsItemStyles = []; // item 样式集合
+
   async created() {
     await getGoods({}).then(res => {
       console.log("商品详情", res);
       this.dataSource = res.data.list;
     });
     await this.initImgStyles();
+    this.$nextTick(() => {
+      this.initWaterfall();
+    });
   }
   // 返回图片的随机高度
   private imgHeight(): number {
@@ -70,6 +78,48 @@ export default class extends Vue {
       this.imgStyles.push({
         height: imgHeight
       });
+    });
+  }
+  // 瀑布流布局
+  // 1、获取到所有的item元素
+  // 2、遍历item元素，得到每一个item的高度，加上一个margin的高度
+  // 3、创建两个变量：leftHeightTotal、rightHeightTotal，分别表示左右两侧目前距离顶部的距离。分别对比左右两侧距离顶部的距离，来确定item的放置位置
+  // 如果左侧小于等于右侧高度的话（leftHeightTotal <= rightHeightTotal）,那么 item 就应该放置到左侧。此时 item 距离左侧为0，距离顶部为当前的 leftHeightTotal。否则 ，item 放置到右侧，此时 item 距离右侧为 0， 距离顶部为当前的 rightHeightTotal。
+  // 4、保存计算出的 item 的所有样式，配置到 item 上。
+  // 5、item 配置完成之后，对比左右两侧最大的高度，最大的高度为 goods 组件的高度
+  private initWaterfall() {
+    // 获取到所有的item元素
+    let $goodsItems = this.$refs.goodsItem;
+    if (!$goodsItems) return;
+    // 左右两侧距离顶部的距离
+    let leftHeightTotal = 0;
+    let rightHeightTotal = 0;
+    $goodsItems.forEach(($el, index) => {
+      // item样式
+      let goodsItemStyle = {};
+      // 遍历 item 元素，得到每一个 item 的高度，加上一个 margin 的高度
+      let elHeight = $el.clientHeight + this.ITEM_MARGIN_SIZE;
+      // 对比 左右两侧距离顶部的高度
+      if (leftHeightTotal <= rightHeightTotal) {
+        // item 就应该放置到左侧。此时 item 距离左侧为0，距离顶部为当前的 leftHeightTotal
+        goodsItemStyle = {
+          left: "0px",
+          top: leftHeightTotal + "px"
+        };
+        // 更新左侧距离顶部的高度
+        leftHeightTotal += elHeight;
+      } else {
+        // item 距离右侧为 0， 距离顶部为当前的 rightHeightTotal。
+        goodsItemStyle = {
+          right: "0px",
+          top: rightHeightTotal + "px"
+        };
+        // 更新右侧距离顶部的高度
+        rightHeightTotal += elHeight;
+      }
+
+      // 保存计算出的 item 的所有样式，配置到 item 上。
+      this.goodsItemStyles.push(goodsItemStyle);
     });
   }
 }
