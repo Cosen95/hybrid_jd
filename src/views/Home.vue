@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" @scroll="onScrollChange" ref="home">
     <navigation-bar :isShowBack="false" :navBarStyle="navBarStyle">
       <!-- 左侧插槽 -->
       <template v-slot:nav-left>
@@ -7,11 +7,12 @@
       </template>
       <!-- 中间插槽 -->
       <template v-slot:nav-center>
-        首页
-        <!-- <search :bgColor="navBarCurrentSlotStyle.search.bgColor" 
-                :hintColor="navBarCurrentSlotStyle.search.hintColor" 
-                :icon="navBarCurrentSlotStyle.search.icon">
-                </search> -->
+        <search
+          :bgColor="navBarCurrentSlotStyle.search.bgColor"
+          :hintColor="navBarCurrentSlotStyle.search.hintColor"
+          :icon="navBarCurrentSlotStyle.search.icon"
+        >
+        </search>
       </template>
       <!-- 右侧插槽 -->
       <template v-slot:nav-right>
@@ -51,6 +52,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import NavigationBar from "@c/currency/NavigationBar.vue";
+import Search from "@c/currency/Search.vue";
 import MySwiper from "@c/currency/MySwiper.vue";
 import Activity from "@c/currency/Activity.vue";
 import ModeOptions from "@c/currency/ModeOptions.vue";
@@ -63,6 +65,7 @@ import { getGoods } from "../services/goods";
   name: "Home",
   components: {
     NavigationBar,
+    Search,
     MySwiper,
     Activity,
     ModeOptions,
@@ -145,8 +148,24 @@ export default class extends Vue {
     position: "fixed",
     backgroundColor: ""
   };
+  // 记录页面滚动值
+  private scrollTopValue: number = -1;
+  // 锚点值
+  private ANCHOR_SCROLL_TOP: number = 160;
   created() {
     this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal;
+  }
+
+  private onScrollChange($event: object) {
+    this.scrollTopValue = $event.target.scrollTop;
+    let opacity = this.scrollTopValue / this.ANCHOR_SCROLL_TOP;
+    if (opacity >= 1) {
+      this.navBarCurrentSlotStyle = this.navBarSlotStyle.highlight;
+    } else {
+      this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal;
+    }
+
+    this.navBarStyle.backgroundColor = `rgba(255,255,255, ${opacity})`;
   }
 }
 </script>
