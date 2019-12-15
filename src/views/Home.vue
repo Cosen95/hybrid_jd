@@ -1,5 +1,23 @@
 <template>
   <div class="home">
+    <navigation-bar :isShowBack="false" :navBarStyle="navBarStyle">
+      <!-- 左侧插槽 -->
+      <template v-slot:nav-left>
+        <img :src="navBarCurrentSlotStyle.leftIcon" alt="" />
+      </template>
+      <!-- 中间插槽 -->
+      <template v-slot:nav-center>
+        首页
+        <!-- <search :bgColor="navBarCurrentSlotStyle.search.bgColor" 
+                :hintColor="navBarCurrentSlotStyle.search.hintColor" 
+                :icon="navBarCurrentSlotStyle.search.icon">
+                </search> -->
+      </template>
+      <!-- 右侧插槽 -->
+      <template v-slot:nav-right>
+        <img :src="navBarCurrentSlotStyle.rightIcon" alt="" />
+      </template>
+    </navigation-bar>
     <div class="home-content">
       <!-- swiper -->
       <my-swiper :swiperImgs="swiperImgs" :height="swiperHeight"></my-swiper>
@@ -32,6 +50,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import NavigationBar from "@c/currency/NavigationBar.vue";
 import MySwiper from "@c/currency/MySwiper.vue";
 import Activity from "@c/currency/Activity.vue";
 import ModeOptions from "@c/currency/ModeOptions.vue";
@@ -43,6 +62,7 @@ import { getGoods } from "../services/goods";
 @Component({
   name: "Home",
   components: {
+    NavigationBar,
     MySwiper,
     Activity,
     ModeOptions,
@@ -89,6 +109,45 @@ export default class extends Vue {
       oldPrice: "2299"
     }
   ];
+  private navBarSlotStyle = {
+    // navBar 插槽的样式数据，包含页面未开始滑动的时候插槽的样式 (默认样式)和 页面滑动到锚定点之后的插槽的样式（高亮样式）
+    // 默认样式
+    normal: {
+      // 左侧插槽
+      leftIcon: require("@imgs/more-white.svg"),
+      // 中间插槽
+      search: {
+        bgColor: "#ffffff",
+        hintColor: "#999999",
+        icon: require("@imgs/search.svg")
+      },
+      // 右侧插槽
+      rightIcon: require("@imgs/message-white.svg")
+    },
+    // 高亮样式
+    highlight: {
+      // 左侧插槽
+      leftIcon: require("@imgs/more.svg"),
+      // 中间插槽
+      search: {
+        bgColor: "#d7d7d7",
+        hintColor: "#ffffff",
+        icon: require("@imgs/search-white.svg")
+      },
+      // 右侧插槽
+      rightIcon: require("@imgs/message.svg")
+    }
+  };
+  // navBar 当前使用的插槽样式
+  private navBarCurrentSlotStyle = {};
+  // navBar 的定制样式,
+  private navBarStyle = {
+    position: "fixed",
+    backgroundColor: ""
+  };
+  created() {
+    this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal;
+  }
 }
 </script>
 
