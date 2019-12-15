@@ -36,7 +36,7 @@ export default class extends Vue {
     },
     required: true
   })
-  private navBarStyle!: [];
+  private navBarStyle!: {};
   @Prop({ default: true }) private isShowBack!: boolean;
 }
 </script>
