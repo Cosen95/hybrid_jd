@@ -5,7 +5,7 @@
     :class="[{ 'bottom-line': pageName }]"
   >
     <!-- 左 -->
-    <div class="left">
+    <div class="left" @click="$emit('onLeftClick')">
       <img v-if="isShowBack" src="@imgs/back.svg" alt="" />
       <slot name="nav-left"></slot>
     </div>
@@ -32,11 +32,10 @@ export default class extends Vue {
   @Prop({ default: "" }) private pageName!: string;
   @Prop({
     default: () => {
-      backgroundColor: "white";
-    },
-    required: true
+      return { backgroundColor: "white" };
+    }
   })
-  private navBarStyle!: {};
+  private navBarStyle?: object;
   @Prop({ default: true }) private isShowBack!: boolean;
 }
 </script>

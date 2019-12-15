@@ -14,3 +14,13 @@ export interface secondsType {
   price: string;
   oldPrice: string;
 }
+
+export interface goodsBaseOption {
+  id: string;
+  name: string;
+}
+export interface goodsOption {
+  id?: string;
+  name?: string;
+  subs?: goodsBaseOption[];
+}

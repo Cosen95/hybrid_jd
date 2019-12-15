@@ -4,6 +4,7 @@
       class="mode-options-item"
       v-for="(item, index) in dataSource"
       :key="index"
+      @click="onItemClick(item)"
     >
       <img class="mode-options-item-icon" :src="item.icon" alt="" srcset="" />
       <p class="mode-options-item-title">{{ item.title }}</p>
@@ -77,6 +78,11 @@ export default class extends Vue {
       title: "全部"
     }
   ];
+  private onItemClick(item: modeType) {
+    this.$router.push({
+      name: "goodsList"
+    });
+  }
 }
 </script>
 
