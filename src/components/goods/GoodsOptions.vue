@@ -117,7 +117,11 @@ export default class extends Vue {
       return;
     }
 
-    if (item.subs.length > 0 && this.selectOptions.id === item.id) {
+    if (
+      item.subs &&
+      item.subs.length > 0 &&
+      this.selectOptions.id === item.id
+    ) {
       this.isShowSubContent = true;
     }
 
