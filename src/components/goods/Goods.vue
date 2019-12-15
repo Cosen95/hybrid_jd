@@ -22,7 +22,9 @@
       <div class="goods-item-desc">
         <p class="goods-item-desc-name text-line-2">
           <!-- 是否为直营 -->
+          <direct v-if="item.isDirect"></direct>
           <!-- 是否有库存 -->
+          <no-have v-if="!item.isHave"></no-have>
           {{ item.name }}
         </p>
         <div class="goods-item-desc-data">
@@ -39,10 +41,14 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { getGoods } from "@/services/goods";
-
+import Direct from "@c/goods/Direct.vue";
+import NoHave from "@c/goods/NoHave.vue";
 @Component({
   name: "Goods",
-  components: {}
+  components: {
+    Direct,
+    NoHave
+  }
 })
 export default class extends Vue {
   private dataSource = []; // 数据源
