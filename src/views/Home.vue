@@ -155,16 +155,26 @@ export default class extends Vue {
   created() {
     this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal;
   }
-
+  /**
+   * 监听页面滚动
+   * 1、获取到当前页面滚动的距离
+   * 2、计算 navBar 背景颜色（navBar 背景透明度）
+   *    当前滚动的距离 / 锚点值 = navBar 背景透明度  opacity
+   * 3、opacity >= 1 ， 当前滚动的距离 已经等于或者超过了 锚点值，当前 navBar 插槽的样式变为 高亮状态的样式。
+   *   否则的话 opacity < 1 ,当前 navBar 插槽的样式，为 默认状态的样式
+   */
   private onScrollChange($event: object) {
+    // 获取到当前页面滚动的距离
     this.scrollTopValue = $event.target.scrollTop;
+    // 计算 navBar 背景颜色（navBar 背景透明度）
     let opacity = this.scrollTopValue / this.ANCHOR_SCROLL_TOP;
+    // 指定 narBar 插槽样式
     if (opacity >= 1) {
       this.navBarCurrentSlotStyle = this.navBarSlotStyle.highlight;
     } else {
       this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal;
     }
-
+    // 根据透明比例来设置 navBar 的背景颜色
     this.navBarStyle.backgroundColor = `rgba(255,255,255, ${opacity})`;
   }
 }
