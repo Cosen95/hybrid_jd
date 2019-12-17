@@ -75,8 +75,8 @@ export default class extends Vue {
   // 不同展示形式下的类名
   // 1、垂直列表的展示形式（默认） -> goods-list & goods-list-item.
   // 2、网格布局的展示形式 -> goods-grid & goods-grid-item
-  private layoutClass = "goods-list";
-  private layoutItemClass = "goods-list-item";
+  private layoutClass = "goods-grid";
+  private layoutItemClass = "goods-grid-item";
 
   async created() {
     await getGoods({}).then(res => {
@@ -203,6 +203,22 @@ export default class extends Vue {
       flex-direction: column;
       justify-content: space-between;
       padding: $marginSize;
+    }
+  }
+}
+// 网格布局
+.goods-grid {
+  padding: $marginSize;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  &-item {
+    width: 49%;
+    border-radius: $radiusSize;
+    margin-bottom: $marginSize;
+
+    .goods-item-img {
+      width: 100%;
     }
   }
 }
