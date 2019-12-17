@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { getGoods } from "@/services/goods";
 import Direct from "@c/goods/Direct.vue";
 import NoHave from "@c/goods/NoHave.vue";
@@ -75,18 +75,43 @@ export default class extends Vue {
   // 不同展示形式下的类名
   // 1、垂直列表的展示形式（默认） -> goods-list & goods-list-item.
   // 2、网格布局的展示形式 -> goods-grid & goods-grid-item
-  private layoutClass = "goods-grid";
-  private layoutItemClass = "goods-grid-item";
+  private layoutClass = "goods-list";
+  private layoutItemClass = "goods-list-item";
 
   async created() {
     await getGoods({}).then(res => {
       console.log("商品详情", res);
       this.dataSource = res.data.list;
     });
-    // await this.initImgStyles();
-    // this.$nextTick(() => {
-    //   this.initWaterfall();
-    // });
+  }
+  @Watch("layoutType")
+  private onLayoutTypeChange(value: string) {
+    this.initLayout();
+  }
+
+  private initLayout() {
+    // 初始化数据
+    this.goodsViewHeight = "100%";
+    this.goodsItemStyles = [];
+    this.imgStyles = [];
+    switch (this.layoutType) {
+      case "1": // 垂直列表
+        this.layoutClass = "goods-list";
+        this.layoutItemClass = "goods-list-item";
+        break;
+      case "2": // 网格布局
+        this.layoutClass = "goods-grid";
+        this.layoutItemClass = "goods-grid-item";
+        break;
+      case "3": // 瀑布流布局
+        this.layoutClass = "goods-waterfall";
+        this.layoutItemClass = "goods-waterfall-item";
+        this.initImgStyles();
+        this.$nextTick(() => {
+          this.initWaterfall();
+        });
+        break;
+    }
   }
   // 返回图片的随机高度
   private imgHeight(): number {

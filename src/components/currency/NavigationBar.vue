@@ -35,7 +35,7 @@ export default class extends Vue {
       backgroundColor: "white";
     }
   })
-  private navBarStyle?: object;
+  private navBarStyle?: { [key: string]: string };
   @Prop({ default: true }) private isShowBack!: boolean;
 }
 </script>
