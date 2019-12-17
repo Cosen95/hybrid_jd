@@ -3,9 +3,15 @@
 1、创建商品列表的基本html和css，让item相对于goods(div)进行排列(相对布局)
 2、生成不同高度的图片，撑起不同高度的item
 3、计算item的位置，来达到从上到下、从左到右依次排列的目的 -->
-  <div class="goods goods-waterfall" ref="goods">
+  <div
+    class="goods"
+    :class="layoutClass"
+    ref="goods"
+    :style="{ height: goodsViewHeight }"
+  >
     <div
-      class="goods-item goods-waterfall-item"
+      class="goods-item"
+      :class="layoutItemClass"
       v-for="(item, index) in dataSource"
       :key="index"
       ref="goodsItem"
@@ -51,22 +57,36 @@ import NoHave from "@c/goods/NoHave.vue";
   }
 })
 export default class extends Vue {
+  /**
+   * 在父元素中指定的展示形式
+   * 1：垂直列表
+   * 2：网格布局
+   * 3：瀑布流布局
+   */
+  @Prop({ default: "1" }) private layoutType!: string;
+
   private dataSource = []; // 数据源
   private imgStyles = []; // 图片样式集合
   private MAX_IMG_HEIGHT = 230; // 最大高度
   private MIN_IMG_HEIGHT = 178; // 最小高度
   private ITEM_MARGIN_SIZE = 8; // item margin
   private goodsItemStyles = []; // item 样式集合
+  private goodsViewHeight = "100%"; // goods 组件的高度
+  // 不同展示形式下的类名
+  // 1、垂直列表的展示形式（默认） -> goods-list & goods-list-item.
+  // 2、网格布局的展示形式 -> goods-grid & goods-grid-item
+  private layoutClass = "goods-list";
+  private layoutItemClass = "goods-list-item";
 
   async created() {
     await getGoods({}).then(res => {
       console.log("商品详情", res);
       this.dataSource = res.data.list;
     });
-    await this.initImgStyles();
-    this.$nextTick(() => {
-      this.initWaterfall();
-    });
+    // await this.initImgStyles();
+    // this.$nextTick(() => {
+    //   this.initWaterfall();
+    // });
   }
   // 返回图片的随机高度
   private imgHeight(): number {
@@ -134,7 +154,8 @@ export default class extends Vue {
 <style lang="scss" scoped>
 .goods {
   background-color: $bgColor;
-
+  overflow: hidden;
+  overflow-y: auto;
   &-item {
     background-color: white;
     padding: $marginSize;
@@ -163,6 +184,25 @@ export default class extends Vue {
           color: $hintColor;
         }
       }
+    }
+  }
+}
+// 垂直列表
+.goods-list {
+  &-item {
+    display: flex;
+    border-bottom: 1px solid $lineColor;
+
+    .goods-item-img {
+      width: px2rem(120);
+      height: px2rem(120);
+    }
+
+    .goods-item-desc {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: $marginSize;
     }
   }
 }

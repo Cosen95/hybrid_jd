@@ -4,6 +4,7 @@
     </navigation-bar>
     <div class="goods-list-page-content">
       <goods-options></goods-options>
+      <goods></goods>
     </div>
   </div>
 </template>
@@ -12,12 +13,14 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import NavigationBar from "@c/currency/NavigationBar.vue";
 import GoodsOptions from "@c/goods/GoodsOptions.vue";
+import Goods from "@c/goods/Goods.vue";
 
 @Component({
   name: "GoodsList",
   components: {
     NavigationBar,
-    GoodsOptions
+    GoodsOptions,
+    Goods
   }
 })
 export default class extends Vue {
