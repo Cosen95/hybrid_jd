@@ -62,6 +62,12 @@
         </ul>
       </div>
     </transition>
+    <!-- 遮盖层 -->
+    <div
+      class="cover"
+      v-show="isShowSubContent"
+      @click="isShowSubContent = false"
+    ></div>
   </div>
 </template>
 

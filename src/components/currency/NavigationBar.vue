@@ -32,7 +32,7 @@ export default class extends Vue {
   @Prop({ default: "" }) private pageName!: string;
   @Prop({
     default: () => {
-      return { backgroundColor: "white" };
+      backgroundColor: "white";
     }
   })
   private navBarStyle?: object;
