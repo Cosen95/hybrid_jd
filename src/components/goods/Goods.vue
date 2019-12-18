@@ -12,7 +12,7 @@
     <div
       class="goods-item"
       :class="layoutItemClass"
-      v-for="(item, index) in dataSource"
+      v-for="(item, index) in sortGoodsData"
       :key="index"
       ref="goodsItem"
       :style="goodsItemStyles[index]"
@@ -69,8 +69,10 @@ export default class extends Vue {
    * 默认允许 goods 单独滑动
    */
   @Prop({ default: true }) private isScroll!: boolean;
+  @Prop({ default: "1" }) private sort!: string;
 
   private dataSource = []; // 数据源
+  private sortGoodsData = []; // 排序数据
   private imgStyles = []; // 图片样式集合
   private MAX_IMG_HEIGHT = 230; // 最大高度
   private MIN_IMG_HEIGHT = 178; // 最小高度
@@ -87,6 +89,10 @@ export default class extends Vue {
     await getGoods({}).then(res => {
       console.log("商品详情", res);
       this.dataSource = res.data.list;
+      // 数据排序
+      this.setSortGoodsData();
+      // 设置布局
+      this.initLayout();
     });
   }
   @Watch("layoutType")
@@ -94,6 +100,58 @@ export default class extends Vue {
     this.initLayout();
   }
 
+  @Watch("sort")
+  private onSortChange() {
+    this.setSortGoodsData();
+  }
+
+  private getSortGoodsDataFromKey(key: string) {
+    this.sortGoodsData.sort((goods1, goods2) => {
+      let v1 = goods1[key];
+      let v2 = goods2[key];
+      // 对 value 进行对比，
+      // boolean 类型的值（有货优先和直营优先）
+      if (typeof v1 === "boolean") {
+        if (v1) {
+          return -1;
+        }
+        if (v2) {
+          return 1;
+        }
+        return 0;
+      }
+      // float 类型值的处理（价格、销量）
+      if (parseFloat(v1) >= parseFloat(v2)) {
+        return -1;
+      }
+      return 1;
+    });
+  }
+  private setSortGoodsData() {
+    switch (this.sort) {
+      // 默认
+      case "1":
+        // 深拷贝，不改变原数组
+        this.sortGoodsData = this.dataSource.slice(0);
+        break;
+      // 价格由高到低
+      case "1-2":
+        this.getSortGoodsDataFromKey("price");
+        break;
+      // 销量由高到低
+      case "1-3":
+        this.getSortGoodsDataFromKey("volume");
+        break;
+      // 有货优先
+      case "2":
+        this.getSortGoodsDataFromKey("isHave");
+        break;
+      // 直营优先
+      case "3":
+        this.getSortGoodsDataFromKey("isDirect");
+        break;
+    }
+  }
   private initLayout() {
     // 初始化数据
     this.goodsViewHeight = "100%";

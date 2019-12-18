@@ -6,8 +6,8 @@
       </template>
     </navigation-bar>
     <div class="goods-list-page-content">
-      <goods-options></goods-options>
-      <goods :layoutType="layoutType.type"></goods>
+      <goods-options @optionsChange="onGoodsOptionsChange"></goods-options>
+      <goods :layoutType="layoutType.type" :sort="sortType"></goods>
     </div>
   </div>
 </template>
@@ -61,6 +61,7 @@ export default class extends Vue {
   ];
   // 当前 goods 展示形式
   private layoutType: layoutTypes = {};
+  private sortType: string = "1"; // goods 排序规则
 
   created() {
     this.layoutType = this.layoutTypeDatas[0];
@@ -73,6 +74,9 @@ export default class extends Vue {
     } else {
       this.layoutType = this.layoutTypeDatas[0];
     }
+  }
+  private onGoodsOptionsChange(sortType: string) {
+    this.sortType = sortType;
   }
   private onBackClick() {
     this.$router.go(-1);

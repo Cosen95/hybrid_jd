@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { goodsOption } from "@/types/common.d.ts";
 
 @Component({
@@ -115,6 +115,12 @@ export default class extends Vue {
   private selectOptions: goodsOption = {};
   // 标记子选项是否处于展开状态
   private isShowSubContent: boolean = false;
+
+  @Watch("selectOptions", { deep: true })
+  onSelectOptionsChange(val: goodsOption) {
+    this.$emit("optionsChange", val.id);
+  }
+
   // 一级选项点击事件
   private onOptionsItemClick(item: goodsOption, index: number) {
     // 如果子选项处于展开状态，则关闭子选项视图
