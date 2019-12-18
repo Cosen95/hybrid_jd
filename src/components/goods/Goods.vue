@@ -5,7 +5,7 @@
 3、计算item的位置，来达到从上到下、从左到右依次排列的目的 -->
   <div
     class="goods"
-    :class="layoutClass"
+    :class="[layoutClass, { 'goods-scroll': isScroll }]"
     ref="goods"
     :style="{ height: goodsViewHeight }"
   >
@@ -64,6 +64,11 @@ export default class extends Vue {
    * 3：瀑布流布局
    */
   @Prop({ default: "1" }) private layoutType!: string;
+  /**
+   * 是否允许 goods 单独滑动
+   * 默认允许 goods 单独滑动
+   */
+  @Prop({ default: true }) private isScroll!: boolean;
 
   private dataSource = []; // 数据源
   private imgStyles = []; // 图片样式集合
@@ -172,6 +177,15 @@ export default class extends Vue {
       // 保存计算出的 item 的所有样式，配置到 item 上。
       this.goodsItemStyles.push(goodsItemStyle);
     });
+
+    // 在不允许 Goods 单独滑动的时候
+    if (!this.isScroll) {
+      // 对比左右两侧最大的高度，最大的高度为 goods 组件的高度
+      this.goodsViewHeight =
+        (leftHeightTotal > rightHeightTotal
+          ? leftHeightTotal
+          : rightHeightTotal) + "px";
+    }
   }
 }
 </script>
@@ -179,8 +193,10 @@ export default class extends Vue {
 <style lang="scss" scoped>
 .goods {
   background-color: $bgColor;
-  overflow: hidden;
-  overflow-y: auto;
+  &-scroll {
+    overflow: hidden;
+    overflow-y: auto;
+  }
   &-item {
     background-color: white;
     padding: $marginSize;
