@@ -24,3 +24,14 @@ export interface goodsOption {
   name?: string;
   subs?: goodsBaseOption[];
 }
+export interface goodsItemType {
+  detailImgs?: string[];
+  id?: string;
+  img?: string;
+  isDirect?: boolean;
+  isHave?: boolean;
+  name?: string;
+  price?: string;
+  swiperImgs?: string[];
+  volume?: string;
+}

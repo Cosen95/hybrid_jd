@@ -16,6 +16,7 @@
       :key="index"
       ref="goodsItem"
       :style="goodsItemStyles[index]"
+      @click="onItemClick(item)"
     >
       <!-- 图片 -->
       <img
@@ -49,6 +50,8 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { getGoods } from "@/services/goods";
 import Direct from "@c/goods/Direct.vue";
 import NoHave from "@c/goods/NoHave.vue";
+import { goodsItemType } from "@/types/common.d.ts";
+
 @Component({
   name: "Goods",
   components: {
@@ -105,6 +108,19 @@ export default class extends Vue {
     this.setSortGoodsData();
   }
 
+  private onItemClick(item: goodsItemType) {
+    //  商品无库存不允许跳转
+    if (!item.isHave) {
+      alert("该商品无库存");
+      return;
+    }
+    this.$router.push({
+      name: "goodsDetail",
+      params: {
+        goods: item
+      }
+    });
+  }
   private getSortGoodsDataFromKey(key: string) {
     this.sortGoodsData.sort((goods1, goods2) => {
       let v1 = goods1[key];
