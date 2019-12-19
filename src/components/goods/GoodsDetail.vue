@@ -3,11 +3,30 @@
     <navigation-bar :isShowBack="false" :navBarStyle="navBarStyle">
       <template v-slot:nav-left>
         <div class="goods-detail-nav-left" @click="onBackClick">
-          <img src="@imgs/back-2.svg" alt="" />
+          <!-- 默认状态下黑色后退按钮 -->
+          <img
+            src="@imgs/back-2.svg"
+            alt=""
+            :style="{ opacity: leftImgOpacity }"
+          />
+          <!-- 完全展示之后的白色后退按钮 -->
+          <img
+            src="@imgs/back-white.svg"
+            alt=""
+            :style="{ opacity: navBarSlotOpacity }"
+          />
         </div>
       </template>
+      <template v-slot:nav-center>
+        <p
+          class="goods-detail-nav-title"
+          :style="{ opacity: navBarSlotOpacity }"
+        >
+          商品详情
+        </p>
+      </template>
     </navigation-bar>
-    <div class="goods-detail-content">
+    <div class="goods-detail-content" @scroll="onScrollChange">
       <my-swiper
         :swiperImgs="goodsData.swiperImgs"
         :height="SWIPER_IMAGE_HEIGHT + 'px'"
@@ -88,11 +107,11 @@ import { goodsItemType } from "@/types/common.d.ts";
 })
 export default class extends Vue {
   private SWIPER_IMAGE_HEIGHT: number = 364;
-  private navBarStyle: { [key: string]: string | number } = {
-    backgroundColor: "",
-    position: "fixed",
-    top: 0
-  };
+  // private navBarStyle: { [key: string]: string | number } = {
+  //   backgroundColor: "",
+  //   position: "fixed",
+  //   top: 0
+  // };
   // 附加服务
   private attachDatas: string[] = [
     "可配送海外",
@@ -103,10 +122,28 @@ export default class extends Vue {
     "不可使用优惠券"
   ];
   private goodsData: goodsItemType = {};
+  private ANCHOR_SCROLL_TOP: number = 310;
+  private scrollValue: number = 0; // 页面滑动
+  public get leftImgOpacity() {
+    return 1 - this.scrollValue / this.ANCHOR_SCROLL_TOP;
+  }
+  public get navBarStyle() {
+    return {
+      backgroundColor: "rgba(216 , 30, 6 , " + this.navBarSlotOpacity + ")",
+      position: "fixed",
+      top: 0
+    };
+  }
+  public get navBarSlotOpacity() {
+    return 1 - this.leftImgOpacity;
+  }
   created() {
     this.goodsData = this.$route.params.goods;
   }
 
+  private onScrollChange($event) {
+    this.scrollValue = $event.target.scrollTop;
+  }
   private onBackClick() {
     this.$router.go(-1);
   }
