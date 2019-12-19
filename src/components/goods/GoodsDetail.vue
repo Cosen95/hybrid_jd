@@ -26,57 +26,64 @@
         </p>
       </template>
     </navigation-bar>
-    <div class="goods-detail-content" @scroll="onScrollChange">
-      <my-swiper
-        :swiperImgs="goodsData.swiperImgs"
-        :height="SWIPER_IMAGE_HEIGHT + 'px'"
-        :paginationType="'2'"
-      ></my-swiper>
-      <!-- 内容 -->
-      <div class="goods-detail-content-desc">
-        <div class="goods-detail-content-desc-item">
-          <!-- 商品价格 -->
-          <p class="goods-detail-content-desc-item-price">
-            ￥{{ goodsData.price | priceValue }}
-          </p>
-          <!-- 商品名称 -->
-          <p class="goods-detail-content-desc-item-name">
-            <!-- 直营 -->
-            <direct v-if="goodsData.isDirect"></direct>
-            {{ goodsData.name }}
-          </p>
-        </div>
+    <div class="goods-detail-content">
+      <parallax @onScrollChange="onScrollChange">
+        <!-- 缓慢移动区 -->
+        <template v-slot:parallax-slow>
+          <my-swiper
+            :swiperImgs="goodsData.swiperImgs"
+            :height="SWIPER_IMAGE_HEIGHT + 'px'"
+            :paginationType="'2'"
+          ></my-swiper>
+        </template>
+        <!-- 内容 -->
+        <template>
+          <div class="goods-detail-content-desc">
+            <div class="goods-detail-content-desc-item">
+              <!-- 商品价格 -->
+              <p class="goods-detail-content-desc-item-price">
+                ￥{{ goodsData.price | priceValue }}
+              </p>
+              <!-- 商品名称 -->
+              <p class="goods-detail-content-desc-item-name">
+                <!-- 直营 -->
+                <direct v-if="goodsData.isDirect"></direct>
+                {{ goodsData.name }}
+              </p>
+            </div>
 
-        <div class="goods-detail-content-desc-item">
-          <!-- 已选商品 -->
-          <p class="goods-detail-content-desc-item-select">
-            已选<span class="single-row-text">{{ goodsData.name }}</span>
-          </p>
-          <!-- 附加服务 -->
-          <div class="goods-detail-content-desc-item-support">
-            <ul class="goods-detail-content-desc-item-support-list">
-              <li
-                class="goods-detail-content-desc-item-support-list-item"
-                v-for="(item, index) in attachDatas"
+            <div class="goods-detail-content-desc-item">
+              <!-- 已选商品 -->
+              <p class="goods-detail-content-desc-item-select">
+                已选<span class="single-row-text">{{ goodsData.name }}</span>
+              </p>
+              <!-- 附加服务 -->
+              <div class="goods-detail-content-desc-item-support">
+                <ul class="goods-detail-content-desc-item-support-list">
+                  <li
+                    class="goods-detail-content-desc-item-support-list-item"
+                    v-for="(item, index) in attachDatas"
+                    :key="index"
+                  >
+                    <img src="@imgs/support.svg" alt="" srcset="" />
+                    <span>{{ item }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- 商品描述 -->
+            <div class="goods-detail-content-desc-detail">
+              <img
+                v-for="(item, index) in goodsData.detailImgs"
                 :key="index"
-              >
-                <img src="@imgs/support.svg" alt="" srcset="" />
-                <span>{{ item }}</span>
-              </li>
-            </ul>
+                :src="item"
+                alt=""
+              />
+            </div>
           </div>
-        </div>
-
-        <!-- 商品描述 -->
-        <div class="goods-detail-content-desc-detail">
-          <img
-            v-for="(item, index) in goodsData.detailImgs"
-            :key="index"
-            :src="item"
-            alt=""
-          />
-        </div>
-      </div>
+        </template>
+      </parallax>
     </div>
     <!-- 加入购物车、立即购买 -->
     <div class="goods-detail-buy">
@@ -95,6 +102,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import NavigationBar from "@c/currency/NavigationBar.vue";
 import MySwiper from "@c/currency/MySwiper.vue";
 import Direct from "@c/goods/Direct.vue";
+import Parallax from "@c/parallax/Parallax.vue";
+
 import { goodsItemType } from "@/types/common.d.ts";
 
 @Component({
@@ -102,7 +111,8 @@ import { goodsItemType } from "@/types/common.d.ts";
   components: {
     NavigationBar,
     MySwiper,
-    Direct
+    Direct,
+    Parallax
   }
 })
 export default class extends Vue {
@@ -141,8 +151,8 @@ export default class extends Vue {
     this.goodsData = this.$route.params.goods;
   }
 
-  private onScrollChange($event) {
-    this.scrollValue = $event.target.scrollTop;
+  private onScrollChange(scrollValue: number) {
+    this.scrollValue = scrollValue;
   }
   private onBackClick() {
     this.$router.go(-1);
@@ -180,7 +190,7 @@ export default class extends Vue {
 
   &-content {
     overflow: hidden;
-    overflow-y: auto;
+    // overflow-y: auto;
     height: 100%;
 
     &-desc {
