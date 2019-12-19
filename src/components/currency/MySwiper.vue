@@ -21,6 +21,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import "swiper/dist/css/swiper.css";
 
 import { swiper, swiperSlide } from "vue-awesome-swiper";
+import { paginationTypes } from "@/types/common.d.ts";
+
 @Component({
   name: "MySwiper",
   components: {
@@ -46,8 +48,35 @@ export default class extends Vue {
       type: "bullets",
       // 分页器内的元素，添加类名
       bulletClass: "custom-bullet-class"
-    }
+    } as paginationTypes
   };
+  created() {
+    this.initPaginnationLayout();
+  }
+
+  private initPaginnationLayout() {
+    switch (this.paginationType) {
+      // 圆点分页器
+      case "1":
+        this.swiperOptions.pagination = {
+          // 分页器对应的 html 元素
+          el: ".swiper-pagination",
+          // 分页器的样式
+          type: "bullets",
+          // 分页器内的元素，添加类名
+          bulletClass: "custom-bullet-class"
+        };
+        break;
+      // 数字分页器
+      case "2":
+        this.swiperOptions.pagination = {
+          el: ".swiper-pagination",
+          // 分页器样式(数字)
+          type: "fraction"
+        };
+        break;
+    }
+  }
 }
 </script>
 
@@ -76,21 +105,21 @@ export default class extends Vue {
 }
 
 // 数字分页器
-// .swiper-pagination-fraction {
-//   left: auto;
-//   right: 0;
-//   width: auto;
-//   font-size: $infoSize;
-//   background-color: rgba(0, 0, 0, 0.3);
-//   padding: px2rem(6) px2rem(18);
-//   border-top-left-radius: px2rem(16);
-//   border-bottom-left-radius: px2rem(16);
-//   bottom: px2rem(32);
-//   color: white;
+.swiper-pagination-fraction {
+  left: auto;
+  right: 0;
+  width: auto;
+  font-size: $infoSize;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: px2rem(6) px2rem(18);
+  border-top-left-radius: px2rem(16);
+  border-bottom-left-radius: px2rem(16);
+  bottom: px2rem(32);
+  color: white;
 
-//   .swiper-pagination-current {
-//     font-size: $titleSize;
-//     font-weight: bold;
-//   }
-// }
+  .swiper-pagination-current {
+    font-size: $titleSize;
+    font-weight: bold;
+  }
+}
 </style>

@@ -35,3 +35,8 @@ export interface goodsItemType {
   swiperImgs?: string[];
   volume?: string;
 }
+export interface paginationTypes {
+  el: string;
+  type: string;
+  bulletClass?: string;
+}
