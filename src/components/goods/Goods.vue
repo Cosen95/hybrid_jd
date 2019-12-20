@@ -117,7 +117,8 @@ export default class extends Vue {
     this.$router.push({
       name: "goodsDetail",
       params: {
-        goods: item
+        goods: item,
+        routerType: "push"
       }
     });
   }

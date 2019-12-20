@@ -80,7 +80,10 @@ export default class extends Vue {
   ];
   private onItemClick(item: modeType) {
     this.$router.push({
-      name: "goodsList"
+      name: "goodsList",
+      params: {
+        routerType: "push"
+      }
     });
   }
 }
