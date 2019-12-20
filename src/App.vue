@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
-      <router-view />
+      <keep-alive :include="virtualTaskStack">
+        <router-view />
+      </keep-alive>
     </transition>
   </div>
 </template>
@@ -15,6 +17,7 @@ import { Route, RouteConfig } from "vue-router";
 })
 export default class App extends Vue {
   private transitionName: string = "fold-left";
+  private virtualTaskStack: (string | undefined)[] = ["Main"]; // 虚拟任务栈
 
   @Watch("$route")
   private onRouteChange(to: Route, from: Route) {
@@ -22,12 +25,12 @@ export default class App extends Vue {
     const routerType = to.params.routerType;
     if (routerType === "push") {
       // 当进入新页面的时候，保存新页面名称到虚拟任务栈
-      // this.virtualTaskStack.push(to.name);
+      this.virtualTaskStack.push(to.name);
       // 跳转页面
       this.transitionName = "fold-left";
     } else {
       // 执行后退操作的时候，把最后一个页面从任务栈中弹出
-      // this.virtualTaskStack.pop();
+      this.virtualTaskStack.pop();
       // 后退页面
       this.transitionName = "fold-right";
     }
