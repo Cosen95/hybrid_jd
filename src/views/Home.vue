@@ -156,6 +156,13 @@ export default class extends Vue {
     this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal;
   }
   /**
+   * keepAlive 组件被激活的时候调用
+   * 去为滑动模块指定滑动距离。
+   */
+  activated() {
+    this.$refs.home.scrollTop = this.scrollTopValue;
+  }
+  /**
    * 监听页面滚动
    * 1、获取到当前页面滚动的距离
    * 2、计算 navBar 背景颜色（navBar 背景透明度）

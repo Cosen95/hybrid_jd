@@ -21,6 +21,7 @@ export default class App extends Vue {
 
   @Watch("$route")
   private onRouteChange(to: Route, from: Route) {
+    console.log("路由变化", to);
     // 获取到携带的标记
     const routerType = to.params.routerType;
     if (routerType === "push") {

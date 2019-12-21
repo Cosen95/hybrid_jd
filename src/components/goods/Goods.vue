@@ -8,6 +8,7 @@
     :class="[layoutClass, { 'goods-scroll': isScroll }]"
     ref="goods"
     :style="{ height: goodsViewHeight }"
+    @scroll="onScrollChange"
   >
     <div
       class="goods-item"
@@ -87,6 +88,7 @@ export default class extends Vue {
   // 2、网格布局的展示形式 -> goods-grid & goods-grid-item
   private layoutClass = "goods-list";
   private layoutItemClass = "goods-list-item";
+  private scrollTopValue: number = 0; // 页面滑动距离
 
   async created() {
     await getGoods({}).then(res => {
@@ -97,6 +99,9 @@ export default class extends Vue {
       // 设置布局
       this.initLayout();
     });
+  }
+  activated() {
+    this.$refs.goods.scrollTop = this.scrollTopValue;
   }
   @Watch("layoutType")
   private onLayoutTypeChange(value: string) {
@@ -261,6 +266,9 @@ export default class extends Vue {
           ? leftHeightTotal
           : rightHeightTotal) + "px";
     }
+  }
+  private onScrollChange($event) {
+    this.scrollTopValue = $event.target.scrollTop;
   }
 }
 </script>
