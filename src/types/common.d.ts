@@ -40,3 +40,9 @@ export interface paginationTypes {
   type: string;
   bulletClass?: string;
 }
+export interface paymentDataType {
+  id?: string;
+  name?: string;
+  desc?: string;
+  icon?: string;
+}

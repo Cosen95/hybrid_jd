@@ -90,7 +90,7 @@
       <div class="goods-detail-buy-add">
         加入购物车
       </div>
-      <div class="goods-detail-buy-now">
+      <div class="goods-detail-buy-now" @click="onBuyClick">
         立即购买
       </div>
     </div>
@@ -154,6 +154,18 @@ export default class extends Vue {
 
   private onScrollChange(scrollValue: number) {
     this.scrollValue = scrollValue;
+  }
+  private onBuyClick() {
+    this.$router.push({
+      name: "buy",
+      params: {
+        routerType: "push",
+        goods: this.goodsData
+      },
+      query: {
+        goodsId: this.goodsData.id
+      }
+    });
   }
   private onBackClick() {
     this.$router.go(-1);
