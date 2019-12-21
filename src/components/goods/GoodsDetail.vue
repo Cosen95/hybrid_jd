@@ -148,6 +148,7 @@ export default class extends Vue {
     return 1 - this.leftImgOpacity;
   }
   created() {
+    // 这里暂时走的是mock，真实项目场景应根据goodsId通过接口查询商品详情
     this.goodsData = this.$route.params.goods;
   }
 

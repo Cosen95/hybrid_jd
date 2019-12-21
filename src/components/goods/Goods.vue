@@ -124,6 +124,10 @@ export default class extends Vue {
       params: {
         goods: item,
         routerType: "push"
+      },
+      // 把传递的id附加到URL上
+      query: {
+        goodsId: item.id
       }
     });
   }
