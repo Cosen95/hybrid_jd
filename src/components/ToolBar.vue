@@ -60,6 +60,11 @@ export default class extends Vue {
     this.selectItemIndex = index;
     this.$emit("onChangeFragment", item.componentName);
   }
+  private pushFragment(index: number) {
+    // 指定切换的 tab 页
+    // 调用 onChangeFragment 切换对应的 tab
+    this.onChangeFragment(this.toolBarData[index], index);
+  }
 }
 </script>
 <style lang="scss" scoped>
