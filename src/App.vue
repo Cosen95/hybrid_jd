@@ -35,6 +35,10 @@ export default class App extends Vue {
       // 后退页面
       this.transitionName = "fold-right";
     }
+    if (to.params.clearTask) {
+      // 初始化虚拟任务栈
+      this.virtualTaskStack = ["Main"];
+    }
   }
 }
 </script>

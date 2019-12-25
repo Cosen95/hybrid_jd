@@ -156,6 +156,7 @@ export default class extends Vue {
     this.scrollValue = scrollValue;
   }
   private onAddGoodsClick() {
+    this.$store.commit("addShoppingData", this.goodsData);
     this.$router.push({
       name: "main",
       params: {
