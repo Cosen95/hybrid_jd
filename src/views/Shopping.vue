@@ -6,11 +6,20 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { ShoppingModule } from "@/store/modules/shopping";
+
 @Component({
   name: "Shopping",
   components: {}
 })
-export default class extends Vue {}
+export default class extends Vue {
+  get shoppingDatas() {
+    return ShoppingModule.shoppingDatas;
+  }
+  created() {
+    console.log("购物车数据", this.shoppingDatas);
+  }
+}
 </script>
 
 <style lang="scss" scoped>

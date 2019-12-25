@@ -30,7 +30,7 @@ class Shopping extends VuexModule implements IShoppingState {
   public shoppingDatas: goodsItemType[] = [];
   // @Mutation 标注为mutation
   @Mutation
-  private addShoppingData(goods: goodsItemType) {
+  public addShoppingData(goods: goodsItemType) {
     // 设置token
     this.shoppingDatas.push(goods);
   }

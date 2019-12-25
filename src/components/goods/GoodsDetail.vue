@@ -105,6 +105,7 @@ import Direct from "@c/goods/Direct.vue";
 import Parallax from "@c/parallax/Parallax.vue";
 
 import { goodsItemType } from "@/types/common.d.ts";
+import { ShoppingModule } from "@/store/modules/shopping";
 
 @Component({
   name: "GoodsDetail",
@@ -156,7 +157,8 @@ export default class extends Vue {
     this.scrollValue = scrollValue;
   }
   private onAddGoodsClick() {
-    this.$store.commit("addShoppingData", this.goodsData);
+    ShoppingModule.addShoppingData(this.goodsData);
+    // this.$store.commit("addShoppingData", this.goodsData);
     this.$router.push({
       name: "main",
       params: {
