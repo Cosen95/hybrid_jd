@@ -5,11 +5,18 @@ import {
   Mutation,
   getModule
 } from "vuex-module-decorators";
+import Vue from "vue";
+
 import store from "@/store";
 import { goodsItemType } from "@/types/common.d.ts";
 
 export interface IShoppingState {
   shoppingDatas: goodsItemType[];
+}
+
+export interface shoppingDataNumber {
+  index: number;
+  number: number;
 }
 
 // @Module 标记当前为module
@@ -31,8 +38,36 @@ class Shopping extends VuexModule implements IShoppingState {
   // @Mutation 标注为mutation
   @Mutation
   public addShoppingData(goods: goodsItemType) {
-    // 设置token
-    this.shoppingDatas.push(goods);
+    /// 判断购物车中是否已经包含该商品，如果购物车已经包含了该商品，那么应该让商品的数量 + 1
+    const isExist = this.shoppingDatas.some(item => {
+      // 该商品已经存在于 购物车中
+      if (item.id === goods.id) {
+        item.number += 1;
+        return true;
+      }
+    });
+    // 只有当购物车中不包含该商品的时候，才让 商品 push 到 shoppingDatas
+    if (!isExist) {
+      // 为商品新增属性
+      // isCheck: 表示商品是否选中
+      // number：表示商品的数量
+      // 通过 Vue.set 的方法可以把新添加的属性变为响应式的数据。
+      // 如果直接通过 goods.isCheck = false;，那么 isCheck 就不是响应式的数据。
+      Vue.set(goods, "isCheck", false);
+      Vue.set(goods, "number", 1);
+      this.shoppingDatas.push(goods);
+    }
+  }
+
+  @Mutation
+  public changeShoppingDataNumber(data: shoppingDataNumber) {
+    /**
+     * data: {
+     * index: 指定的商品下标,
+     * number : 商品数量
+     * }
+     */
+    this.shoppingDatas[data.index].number = data.number;
   }
 
   // @Action

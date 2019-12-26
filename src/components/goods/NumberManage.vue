@@ -32,8 +32,9 @@ export default class extends Vue {
     // 加号按钮点击事件
     this.number += 1;
   }
-  @Watch("defaultNumber")
+  @Watch("defaultNumber", { immediate: true })
   private onDefaultNumberChange(val: number) {
+    console.log("number初始化", val);
     this.number = val;
   }
   @Watch("number")

@@ -34,6 +34,8 @@ export interface goodsItemType {
   price?: string;
   swiperImgs?: string[];
   volume?: string;
+  number?: number;
+  isCheck?: boolean;
 }
 export interface paginationTypes {
   el: string;
