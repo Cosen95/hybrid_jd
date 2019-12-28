@@ -48,7 +48,7 @@ export default class extends Vue {
   display: flex;
   justify-content: space-between;
   // 适配沉浸式手机 statusBar
-  // padding-top: $statusBarHeight;
+  padding-top: $statusBarHeight;
   .left,
   .right {
     display: flex;
