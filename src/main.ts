@@ -3,6 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "@js/htmlFontSize.ts";
+import "@js/isIphoneX.ts";
+
 // import "@js/flexible.ts";
 // 过滤器
 import * as filters from "@/utils/filters.ts";

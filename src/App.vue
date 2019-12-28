@@ -11,6 +11,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Route, RouteConfig } from "vue-router";
+import { UserModule } from "@/store/modules/user";
 
 @Component({
   components: {}
@@ -18,7 +19,9 @@ import { Route, RouteConfig } from "vue-router";
 export default class App extends Vue {
   private transitionName: string = "fold-left";
   private virtualTaskStack: (string | undefined)[] = ["Main"]; // 虚拟任务栈
-
+  created() {
+    UserModule.setIsIphoneX(window.isIphoneX);
+  }
   @Watch("$route")
   private onRouteChange(to: Route, from: Route) {
     console.log("路由变化", to);

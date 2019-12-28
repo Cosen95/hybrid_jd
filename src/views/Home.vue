@@ -60,6 +60,7 @@ import Seconds from "@c/seconds/Seconds.vue";
 import Goods from "@c/goods/Goods.vue";
 import { secondsType } from "@/types/common.d.ts";
 import { getGoods } from "../services/goods";
+import { UserModule } from "@/store/modules/user";
 
 @Component({
   name: "Home",
@@ -84,7 +85,7 @@ export default class extends Vue {
     require("@imgs/swiper-7.jpg"),
     require("@imgs/swiper-8.jpg")
   ];
-  private swiperHeight: string = "184px";
+  private swiperHeight: string = this.isIphoneX ? "228px" : "184px";
   private activityDatas: string[] = [
     require("@imgs/520-1.gif"),
     require("@imgs/520-2.gif"),
@@ -152,7 +153,11 @@ export default class extends Vue {
   private scrollTopValue: number = -1;
   // 锚点值
   private ANCHOR_SCROLL_TOP: number = 160;
+  get isIphoneX() {
+    return UserModule.isIphoneX;
+  }
   created() {
+    // console.log("Home", this.isIphoneX);
     this.navBarCurrentSlotStyle = this.navBarSlotStyle.normal;
   }
   /**

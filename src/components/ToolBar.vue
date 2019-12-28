@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-bar">
+  <div class="tool-bar" :class="{ 'iphonex-bottom': isIphoneX }">
     <div
       class="tool-bar-item"
       v-for="(item, index) in toolBarData"
@@ -24,6 +24,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { toolBarType } from "@/types/common.d.ts";
+import { UserModule } from "@/store/modules/user";
 
 @Component({
   name: "ToolBar"
@@ -55,6 +56,9 @@ export default class extends Vue {
   ];
   // 选中的 tab 按钮
   private selectItemIndex: number = 0;
+  get isIphoneX() {
+    return UserModule.isIphoneX;
+  }
 
   private onChangeFragment(item: toolBarType, index: number) {
     this.selectItemIndex = index;

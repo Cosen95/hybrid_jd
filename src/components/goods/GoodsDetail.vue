@@ -86,7 +86,7 @@
       </parallax>
     </div>
     <!-- 加入购物车、立即购买 -->
-    <div class="goods-detail-buy">
+    <div class="goods-detail-buy" :class="{ 'iphonex-bottom': isIphoneX }">
       <div class="goods-detail-buy-add" @click="onAddGoodsClick">
         加入购物车
       </div>
@@ -106,6 +106,7 @@ import Parallax from "@c/parallax/Parallax.vue";
 
 import { goodsItemType } from "@/types/common.d.ts";
 import { ShoppingModule } from "@/store/modules/shopping";
+import { UserModule } from "@/store/modules/user";
 
 @Component({
   name: "GoodsDetail",
@@ -135,6 +136,9 @@ export default class extends Vue {
   private goodsData: goodsItemType = {};
   private ANCHOR_SCROLL_TOP: number = 310;
   private scrollValue: number = 0; // 页面滑动
+  get isIphoneX() {
+    return UserModule.isIphoneX;
+  }
   public get leftImgOpacity() {
     return 1 - this.scrollValue / this.ANCHOR_SCROLL_TOP;
   }

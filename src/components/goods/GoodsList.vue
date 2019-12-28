@@ -5,7 +5,10 @@
         <img :src="layoutType.icon" @click="onChangeLayoutTypeClick()" />
       </template>
     </navigation-bar>
-    <div class="goods-list-page-content">
+    <div
+      class="goods-list-page-content"
+      :class="{ 'iphonex-bottom': isIphoneX }"
+    >
       <goods-options @optionsChange="onGoodsOptionsChange"></goods-options>
       <goods :layoutType="layoutType.type" :sort="sortType"></goods>
     </div>
@@ -17,6 +20,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import NavigationBar from "@c/currency/NavigationBar.vue";
 import GoodsOptions from "@c/goods/GoodsOptions.vue";
 import Goods from "@c/goods/Goods.vue";
+import { UserModule } from "@/store/modules/user";
 
 interface layoutTypes {
   type?: string;
@@ -62,6 +66,9 @@ export default class extends Vue {
   // 当前 goods 展示形式
   private layoutType: layoutTypes = {};
   private sortType: string = "1"; // goods 排序规则
+  get isIphoneX() {
+    return UserModule.isIphoneX;
+  }
 
   created() {
     this.layoutType = this.layoutTypeDatas[0];

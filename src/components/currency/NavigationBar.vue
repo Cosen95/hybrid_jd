@@ -2,7 +2,7 @@
   <div
     class="nav-bar z-index-max"
     :style="navBarStyle"
-    :class="[{ 'bottom-line': pageName }]"
+    :class="[{ 'iphonex-top': isIphoneX }, { 'bottom-line': pageName }]"
   >
     <!-- 左 -->
     <div class="left" @click="$emit('onLeftClick')">
@@ -23,6 +23,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { UserModule } from "@/store/modules/user";
 
 @Component({
   name: "NavigationBar",
@@ -37,6 +38,10 @@ export default class extends Vue {
   })
   private navBarStyle?: { [key: string]: string };
   @Prop({ default: true }) private isShowBack!: boolean;
+
+  get isIphoneX() {
+    return UserModule.isIphoneX;
+  }
 }
 </script>
 
