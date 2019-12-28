@@ -54,3 +54,21 @@
   color: white;
   text-align: center;
 }
+
+.input-container {
+  height: px2rem(48);
+  padding: $marginSize;
+  overflow: hidden;
+  margin-top: $marginSize;
+  background-color: white;
+  border-bottom: px2rem(1) solid $lineColor;
+  box-sizing: border-box;
+
+  input {
+    width: 100%;
+    height: 100%;
+    font-size: $titleSize;
+    outline: none;
+    border: none;
+  }
+}
