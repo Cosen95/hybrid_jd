@@ -31,8 +31,8 @@ class User extends VuexModule implements IUserState {
 
   public isIphoneX = false;
   public userName = "";
-  // @Mutation 标注为mutation
 
+  // @Mutation 标注为mutation
   @Mutation
   public setIsIphoneX(isIphoneX: boolean) {
     this.isIphoneX = isIphoneX;
@@ -43,6 +43,10 @@ class User extends VuexModule implements IUserState {
     this.userName = userName;
   }
 
+  @Mutation
+  public clearUsername() {
+    this.userName = "";
+  }
   // @Action
   // public async LogOut() {
   //   // 注销

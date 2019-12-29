@@ -25,6 +25,7 @@ export default class App extends Vue {
     window.nativeFunctionUserLogin = this.nativeFunctionUserLogin;
   }
   private nativeFunctionUserLogin(username: string) {
+    // 保存自动登录用的 username 到 vuex
     UserModule.setUsername(username);
   }
   @Watch("$route")
