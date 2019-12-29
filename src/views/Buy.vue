@@ -52,7 +52,7 @@
     </div>
 
     <!-- 立即购买 -->
-    <div class="pay page-commit">
+    <div class="pay page-commit" @click="onPayClick">
       立即购买
     </div>
   </div>
@@ -98,6 +98,32 @@ export default class extends Vue {
   private onPaymentItemClick(item: paymentDataType) {
     // 支付方式切换
     this.selectPayment = item;
+  }
+  private onPayClick() {
+    // 判断用户选择的支付方式
+
+    // 支付宝支付
+    if (this.selectPayment.id === "1") {
+      this.aliPay();
+    }
+    // 微信支付
+    else if (this.selectPayment.id === "2") {
+      this.wxPay();
+    }
+  }
+  private aliPay() {
+    // 判断当前设备为 Android 设备
+    if (window.androidJSBridge) {
+      // 调用 支付宝支付的方法
+      window.androidJSBridge.aliPay(JSON.stringify(this.goodsData));
+    }
+  }
+  private wxPay() {
+    // 判断当前设备为 Android 设备
+    if (window.androidJSBridge) {
+      // 调用 微信支付的方法
+      window.androidJSBridge.wxPay(JSON.stringify(this.goodsData));
+    }
   }
   private getCheckIcon(isCheck: boolean) {
     return isCheck ? require("@imgs/check.svg") : require("@imgs/no-check.svg");
