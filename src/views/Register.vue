@@ -37,6 +37,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import NavigationBar from "@c/currency/NavigationBar.vue";
+import { Md5 } from "ts-md5/dist/md5";
 
 @Component({
   name: "Register",
@@ -48,6 +49,7 @@ export default class extends Vue {
   private username: string = "";
   private password: string = "";
   private confirmPassword: string = "";
+  private md5Password: string | Int32Array = "";
   private onBackClick() {
     this.$router.go(-1);
   }
@@ -62,6 +64,43 @@ export default class extends Vue {
     }
 
     // 与原生交互，保存用户输入的用户名和密码
+    // 对用户输入的密码进行 MD5 加密
+    this.md5Password = Md5.hashStr(this.password);
+    console.log("加密后", this.md5Password);
+
+    // 判断当前的项目是运行在 Android 设备还是 IOS 设备中
+    if (window.androidJSBridge) {
+      // window 下存在 android 注入的对象（androidJSBridge），则表示当前项目在 android 设备中运行
+      this.onRegisterToAndroid();
+    } else if (window.webkit) {
+      // window 下存在 webkit ，表示当前项目在 IOS 设备中运行
+      // this.onRegisterToIOS();
+    }
+  }
+  /**
+   * 调用 android 注册接口
+   */
+  private onRegisterToAndroid() {
+    // json 字符串，Android 只能接收基本类型参数
+    let userJson = JSON.stringify({
+      username: this.username,
+      password: this.md5Password
+    });
+    // 调用 android 注册方法，接收他的返回值
+    let result = window.androidJSBridge.register(userJson);
+    // 对返回值进行处理
+    this.onRegisterCallback(result);
+  }
+  /**
+   * 用来处理 Native 注册接口的返回值
+   */
+  private onRegisterCallback(result) {
+    if (result) {
+      alert("注册成功");
+      this.onBackClick();
+    } else {
+      alert("注册失败，请重试！");
+    }
   }
 }
 </script>
