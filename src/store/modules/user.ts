@@ -11,6 +11,7 @@ import store from "@/store";
 
 export interface IUserState {
   isIphoneX: boolean;
+  userName: string;
 }
 
 // @Module 标记当前为module
@@ -29,11 +30,17 @@ class User extends VuexModule implements IUserState {
   /* 这里代表的就是state里面的状态 */
 
   public isIphoneX = false;
+  public userName = "";
   // @Mutation 标注为mutation
 
   @Mutation
   public setIsIphoneX(isIphoneX: boolean) {
     this.isIphoneX = isIphoneX;
+  }
+
+  @Mutation
+  public setUsername(userName: string) {
+    this.userName = userName;
   }
 
   // @Action
