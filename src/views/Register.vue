@@ -74,7 +74,7 @@ export default class extends Vue {
       this.onRegisterToAndroid();
     } else if (window.webkit) {
       // window 下存在 webkit ，表示当前项目在 IOS 设备中运行
-      // this.onRegisterToIOS();
+      this.onRegisterToIOS();
     }
   }
   /**
@@ -90,6 +90,26 @@ export default class extends Vue {
     let result = window.androidJSBridge.register(userJson);
     // 对返回值进行处理
     this.onRegisterCallback(result);
+  }
+  /**
+   * 调用 IOS 注册接口
+   */
+  private onRegisterToIOS() {
+    // IOS 可以直接接收对象类型参数
+    let userObj = {
+      username: this.username,
+      password: this.md5Password
+    };
+
+    /**
+     * IOS 不能直接返回返回值，所以 IOS 操作完成之后会回调对应的回调方法。
+     * 同时原生调用 JS 的方法只能使调用 绑定到 window 对象中的方法。
+     * 所以我们需要把 IOS 操作完成之后的回调方法 (registerCallback) 绑定到 window 对象下
+     */
+    window.registerCallback = this.onRegisterCallback;
+
+    // 调用 IOS 注册方法
+    window.webkit.messageHandlers.register.postMessage(userObj);
   }
   /**
    * 用来处理 Native 注册接口的返回值
