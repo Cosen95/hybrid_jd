@@ -21,6 +21,11 @@ export default class App extends Vue {
   private virtualTaskStack: (string | undefined)[] = ["Main"]; // 虚拟任务栈
   created() {
     UserModule.setIsIphoneX(window.isIphoneX);
+    // 指定 Native 主动调用的方法
+    window.nativeFunctionUserLogin = this.nativeFunctionUserLogin;
+  }
+  private nativeFunctionUserLogin(username: string) {
+    UserModule.setUsername(username);
   }
   @Watch("$route")
   private onRouteChange(to: Route, from: Route) {
